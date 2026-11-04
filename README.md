@@ -74,9 +74,6 @@ In **Settings** (menu bar icon ▸ Settings…) you can turn any group off, move
 up or down, or show its items **inline** instead of in a submenu. Settings and
 the menu speak English or 简体中文, and come in nine color themes, light or dark.
 
-<p align="center">
-  <img src="assets/screenshot-settings.png" width="640" alt="Menubloom's Settings window: the Appearance page with nine color themes">
-</p>
 
 ### iCloud Drive, Dropbox and OneDrive
 

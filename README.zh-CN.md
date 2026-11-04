@@ -68,9 +68,6 @@ Menubloom 把这些功能放回访达的右键菜单，再加上开发者和重�
 在 **设置**（菜单栏图标 ▸ 设置…）里，每一组都可以关闭、上下移动，或者 **展开**
 到顶层而不放在子菜单里。设置和菜单支持英文和简体中文，有九种配色主题，浅色深色都有。
 
-<p align="center">
-  <img src="assets/screenshot-settings.png" width="640" alt="Menubloom 设置窗口的外观页：九种配色主题">
-</p>
 
 ### iCloud 云盘、Dropbox 和 OneDrive
 
