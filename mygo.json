@@ -1,0 +1,136 @@
+{
+  "name": "Menubloom",
+  "slug": "menubloom",
+  "identifier": "io.github.lzhgus.menubloom",
+  "version": "0.5.0",
+  "copyright": "© 2026 lzhgus",
+  "icon": "assets/icon.png",
+  "out": "build",
+  "urlSchemes": [
+    "menubloom"
+  ],
+  "macos": {
+    "minimumSystemVersion": "12.0",
+    "infoPlist": {
+      "LSUIElement": true,
+      "LSApplicationCategoryType": "public.app-category.utilities",
+      "NSServices": [
+        {
+          "NSMenuItem": {
+            "default": "Menubloom: Copy Path"
+          },
+          "NSMessage": "runService",
+          "NSPortName": "Menubloom",
+          "NSUserData": "copy:path",
+          "NSSendFileTypes": [
+            "public.item"
+          ],
+          "NSRequiredContext": {}
+        },
+        {
+          "NSMenuItem": {
+            "default": "Menubloom: Copy Name"
+          },
+          "NSMessage": "runService",
+          "NSPortName": "Menubloom",
+          "NSUserData": "copy:name",
+          "NSSendFileTypes": [
+            "public.item"
+          ],
+          "NSRequiredContext": {}
+        },
+        {
+          "NSMenuItem": {
+            "default": "Menubloom: Open in Terminal"
+          },
+          "NSMessage": "runService",
+          "NSPortName": "Menubloom",
+          "NSUserData": "open:terminal",
+          "NSSendFileTypes": [
+            "public.item"
+          ],
+          "NSRequiredContext": {}
+        },
+        {
+          "NSMenuItem": {
+            "default": "Menubloom: Open in Editor"
+          },
+          "NSMessage": "runService",
+          "NSPortName": "Menubloom",
+          "NSUserData": "open:editor",
+          "NSSendFileTypes": [
+            "public.item"
+          ],
+          "NSRequiredContext": {}
+        },
+        {
+          "NSMenuItem": {
+            "default": "Menubloom: New Text File Here"
+          },
+          "NSMessage": "runService",
+          "NSPortName": "Menubloom",
+          "NSUserData": "new:.txt",
+          "NSSendFileTypes": [
+            "public.item"
+          ],
+          "NSRequiredContext": {}
+        },
+        {
+          "NSMenuItem": {
+            "default": "Menubloom: Cut"
+          },
+          "NSMessage": "runService",
+          "NSPortName": "Menubloom",
+          "NSUserData": "cut",
+          "NSSendFileTypes": [
+            "public.item"
+          ],
+          "NSRequiredContext": {}
+        },
+        {
+          "NSMenuItem": {
+            "default": "Menubloom: Paste Here"
+          },
+          "NSMessage": "runService",
+          "NSPortName": "Menubloom",
+          "NSUserData": "paste",
+          "NSSendFileTypes": [
+            "public.item"
+          ],
+          "NSRequiredContext": {}
+        },
+        {
+          "NSMenuItem": {
+            "default": "Menubloom: Copy To…"
+          },
+          "NSMessage": "runService",
+          "NSPortName": "Menubloom",
+          "NSUserData": "copyto:",
+          "NSSendFileTypes": [
+            "public.item"
+          ],
+          "NSRequiredContext": {}
+        },
+        {
+          "NSMenuItem": {
+            "default": "Menubloom: Move To…"
+          },
+          "NSMessage": "runService",
+          "NSPortName": "Menubloom",
+          "NSUserData": "moveto:",
+          "NSSendFileTypes": [
+            "public.item"
+          ],
+          "NSRequiredContext": {}
+        }
+      ],
+      "NSAppleEventsUsageDescription": "Shortcuts of your custom actions ask Finder which items are selected.",
+      "CFBundleDevelopmentRegion": "en",
+      "CFBundleLocalizations": [
+        "en",
+        "zh-Hans"
+      ]
+    },
+    "entitlements": "entitlements.plist"
+  }
+}
