@@ -6,6 +6,7 @@
 
 <p align="center">
   <b>The right-click menu your Mac is missing.</b><br>
+  <a href="https://menubloom.lzhgus.com">Website</a> ·
   <a href="#download">Download</a> ·
   <a href="#what-it-adds">What it adds</a> ·
   <a href="#build-from-source">Build from source</a><br>

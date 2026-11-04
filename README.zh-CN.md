@@ -6,6 +6,7 @@
 
 <p align="center">
   <b>补齐 Mac 右键菜单缺的那些功能。</b><br>
+  <a href="https://menubloom.lzhgus.com/zh/">官网</a> ·
   <a href="#下载">下载</a> ·
   <a href="#加了什么">加了什么</a> ·
   <a href="#从源码构建">从源码构建</a><br>
