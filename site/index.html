@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Menubloom: the right-click menu your Mac is missing</title>
+<meta name="description" content="Menubloom adds New File, Copy Path, Cut and Paste, Open in Terminal and more to Finder's right-click on the Mac. Free and open source, for macOS 12 or newer.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f9f4ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1511" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://menubloom.lzhgus.com/">
+<link rel="alternate" hreflang="en" href="https://menubloom.lzhgus.com/">
+<link rel="alternate" hreflang="zh-CN" href="https://menubloom.lzhgus.com/zh/">
+<link rel="alternate" hreflang="x-default" href="https://menubloom.lzhgus.com/">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Menubloom">
+<meta property="og:title" content="Menubloom: the right-click menu your Mac is missing">
+<meta property="og:description" content="New File, Copy Path, Cut and Paste, Open in Terminal and more, in Finder's right-click. Free and open source.">
+<meta property="og:url" content="https://menubloom.lzhgus.com/">
+<meta property="og:image" content="https://menubloom.lzhgus.com/og-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Menubloom: the right-click menu your Mac is missing">
+<meta name="twitter:description" content="New File, Copy Path, Cut and Paste, Open in Terminal and more, in Finder's right-click. Free and open source.">
+<meta name="twitter:image" content="https://menubloom.lzhgus.com/og-en.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Menubloom","applicationCategory":"UtilitiesApplication","operatingSystem":"macOS 12+","downloadUrl":"https://github.com/lzhgus/menubloom/releases/download/v0.5.0/menubloom-0.5.0.dmg","softwareVersion":"0.5.0","license":"https://opensource.org/licenses/MIT","url":"https://menubloom.lzhgus.com/","codeRepository":"https://github.com/lzhgus/menubloom","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="folder" viewBox="0 0 64 52"><path d="M4 9a4 4 0 0 1 4-4h14l5 5h29a4 4 0 0 1 4 4v4H4z" fill="#4f9fe0"/><rect x="4" y="14" width="56" height="34" rx="4" fill="#78bdf4"/><rect x="4" y="14" width="56" height="5" rx="2" fill="#9dd0fa"/></symbol>
+  <symbol id="doc" viewBox="0 0 44 56"><path d="M5 2h25l12 12v38a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#fff" stroke="#d4d4d4"/><path d="M30 2v10a2 2 0 0 0 2 2h10" fill="#efefef" stroke="#d4d4d4"/></symbol>
+  <symbol id="i-new" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M12 11v6M9 14h6"/></g></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/></g></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></g></symbol>
+  <symbol id="i-term" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7 9l3 3-3 3M12.5 15H17"/></g></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g></symbol>
+  <symbol id="i-cut" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4L8.1 15.9M14.5 14.5L20 20M8.1 8.1L12 12"/></g></symbol>
+  <symbol id="i-move" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 13h7M13.5 10.5L16 13l-2.5 2.5"/></g></symbol>
+  <symbol id="i-img" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="9.5" r="1.8"/><path d="M21 16l-5-5-9 9"/></g></symbol>
+  <symbol id="i-wand" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20L15 9M15 3v2M15 11v2M19 7h2M9 7h2M18 4l1.4-1.4M12 10L10.6 8.6"/></g></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8 1.5 0 1.9.8 3.2.8 1.3 0 2.1-1.2 2.9-2.4.9-1.4 1.3-2.7 1.3-2.8 0 0-2.4-1-2.4-3.9zM14 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1 .1 2.1-.6 2.8-1.4z"/></symbol>
+  <symbol id="i-gh" viewBox="0 0 16 16"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></symbol>
+</svg>
+<template id="doc-ico"><svg viewBox="0 0 44 56"><use href="#doc"/></svg></template>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="/"><img src="/logo-192.png" width="28" height="28" alt=""> Menubloom</a>
+    <nav aria-label="Primary" class="links">
+      <a href="#why">Why</a>
+      <a href="#features">Features</a>
+      <a href="#more">More</a>
+    </nav>
+    <div class="nav-r">
+      <a class="lang" href="/zh/" hreflang="zh-CN" lang="zh-CN">中文</a>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/lzhgus/menubloom"><svg width="16" height="16" aria-hidden="true"><use href="#i-gh"/></svg><span class="hide-s">GitHub</span></a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Free · Open source · macOS 12+</p>
+    <h1>The right-click menu your Mac is <em>missing</em>.</h1>
+    <p class="lede">Menubloom adds New File, Copy Path, Cut and Paste, Open in Terminal and more to Finder's right-click, the way Windows has always had them.</p>
+    <div class="ctas">
+      <a class="btn btn-primary btn-lg" href="https://github.com/lzhgus/menubloom/releases/download/v0.5.0/menubloom-0.5.0.dmg"><svg width="18" height="18" aria-hidden="true"><use href="#i-apple"/></svg>Download for Mac</a>
+      <a class="btn btn-ghost btn-lg" href="https://github.com/lzhgus/menubloom"><svg width="16" height="16" aria-hidden="true"><use href="#i-gh"/></svg>View on GitHub</a>
+    </div>
+    <p class="meta">Version 0.5.0 · Apple Silicon and Intel · Signed and notarized</p>
+
+    <div class="stage" id="demo"
+      data-t-created="Created {name}"
+      data-t-copied="Copied {text}"
+      data-t-open="Opens Projects in {app}"
+      data-t-show="Show Hidden Files"
+      data-t-hide="Hide Hidden Files">
+      <p class="hint" aria-hidden="true"><span class="h-mouse">Try it: right-click anywhere in the window</span><span class="h-touch">Try it: tap inside the window</span></p>
+      <div class="win">
+        <div class="win-bar">
+          <div class="lights" aria-hidden="true"><i></i><i></i><i></i></div>
+          <span class="win-title">Projects</span>
+          <div class="win-tools" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></g></svg>
+            <svg viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></g></svg>
+          </div>
+        </div>
+        <div class="files" tabindex="0" role="application" aria-label="A demo Finder window. Press Enter to open its right-click menu.">
+          <div class="file hidden-file" hidden><div class="ico"><svg viewBox="0 0 64 52"><use href="#folder"/></svg></div><span>.git</span></div>
+          <div class="file"><div class="ico"><svg viewBox="0 0 64 52"><use href="#folder"/></svg></div><span>assets</span></div>
+          <div class="file"><div class="ico"><img src="/logo-192.png" alt=""></div><span>cover.png</span></div>
+          <div class="file hidden-file" hidden><div class="ico"><svg viewBox="0 0 44 56"><use href="#doc"/></svg></div><span>.env</span></div>
+          <div class="file"><div class="ico"><svg viewBox="0 0 44 56"><use href="#doc"/></svg></div><span>notes.txt</span></div>
+          <div class="file"><div class="ico"><svg viewBox="0 0 44 56"><use href="#doc"/></svg></div><span>README.md</span></div>
+          <div class="file"><div class="ico"><svg viewBox="0 0 64 52"><use href="#folder"/></svg></div><span>src</span></div>
+
+          <ul class="ctx" role="menu" style="left:31%;top:124px">
+            <li><button class="native" role="menuitem">New Folder</button></li>
+            <li><button class="native" role="menuitem">Get Info</button></li>
+            <li class="sep" role="separator"></li>
+            <li><button class="native" role="menuitem">Show View Options</button></li>
+            <li class="sep" role="separator"></li>
+            <li class="open"><button role="menuitem" aria-haspopup="true" data-first><span class="i"><svg><use href="#i-new"/></svg></span>New File<span class="chev"></span></button>
+              <ul class="ctx sub" role="menu">
+                <li><button role="menuitem" data-act="new" data-ext=".md">Markdown</button></li>
+                <li><button role="menuitem" data-act="new" data-ext=".txt">Text Document</button></li>
+                <li><button role="menuitem" data-act="new" data-ext=".docx">Word Document</button></li>
+                <li><button role="menuitem" data-act="new" data-ext=".xlsx">Excel Workbook</button></li>
+                <li><button role="menuitem" data-act="new" data-ext=".html">HTML</button></li>
+                <li><button role="menuitem" data-act="new" data-ext=".json">JSON</button></li>
+                <li><button role="menuitem" data-act="new" data-ext=".py">Python</button></li>
+                <li><button role="menuitem" data-act="new" data-ext=".sh">Shell Script</button></li>
+                <li class="sep" role="separator"></li>
+                <li><button class="native" role="menuitem">Edit Templates…</button></li>
+              </ul>
+            </li>
+            <li><button role="menuitem" data-act="copy" data-text="/Users/you/Projects"><span class="i"><svg><use href="#i-link"/></svg></span>Copy Path</button></li>
+            <li><button role="menuitem" aria-haspopup="true"><span class="i"><svg><use href="#i-copy"/></svg></span>Copy As<span class="chev"></span></button>
+              <ul class="ctx sub" role="menu">
+                <li><button role="menuitem" data-act="copy" data-text="Projects">Name</button></li>
+                <li><button role="menuitem" data-act="copy" data-text="~/Projects">~ Path</button></li>
+                <li><button role="menuitem" data-act="copy" data-text="'/Users/you/Projects'">Quoted Path (for the shell)</button></li>
+                <li><button role="menuitem" data-act="copy" data-text="file:///Users/you/Projects/">File URL</button></li>
+                <li><button role="menuitem" data-act="copy" data-text="[Projects](file:///Users/you/Projects/)">Markdown Link</button></li>
+              </ul>
+            </li>
+            <li><button role="menuitem" aria-haspopup="true"><span class="i"><svg><use href="#i-term"/></svg></span>Open In<span class="chev"></span></button>
+              <ul class="ctx sub" role="menu">
+                <li><button role="menuitem" data-act="open" data-app="Terminal">Terminal</button></li>
+                <li><button role="menuitem" data-act="open" data-app="Ghostty">Ghostty</button></li>
+                <li><button role="menuitem" data-act="open" data-app="Warp">Warp</button></li>
+                <li><button role="menuitem" data-act="open" data-app="VS Code">VS Code</button></li>
+                <li><button role="menuitem" data-act="open" data-app="Cursor">Cursor</button></li>
+                <li><button role="menuitem" data-act="open" data-app="Zed">Zed</button></li>
+              </ul>
+            </li>
+            <li class="sep" role="separator"></li>
+            <li><button role="menuitem" data-act="hidden"><span class="i"><svg><use href="#i-eye"/></svg></span><span class="t">Show Hidden Files</span></button></li>
+          </ul>
+        </div>
+      </div>
+      <div class="toast" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="why">
+  <div class="wrap why">
+    <div class="rv">
+      <p class="kicker">Why</p>
+      <h2>Coming from <em>Windows</em>? So did we.</h2>
+      <p class="intro">On Windows you right-click in a folder to make a new text file, copy a file's path, or open a terminal right there. Finder's right-click can't do any of it. We ran into this every day, and it's the first thing people new to the Mac ask about. So we put those things back.</p>
+      <p class="intro">Turn on one switch and they're in every Finder window. There are no folders to authorize.</p>
+    </div>
+    <div class="swap rv" role="table" aria-label="Before and with Menubloom">
+      <div class="swap-head" role="row"><div role="columnheader">Before</div><div role="columnheader">With Menubloom</div></div>
+      <div class="swap-row" role="row"><div role="cell">Open TextEdit, save an empty file</div><div role="cell">New File ▸ Text Document</div></div>
+      <div class="swap-row" role="row"><div role="cell">Drag a file into Terminal for its path</div><div role="cell">Copy Path</div></div>
+      <div class="swap-row" role="row"><div role="cell">Remember that ⌘⌥V moves what ⌘C copied</div><div role="cell">Cut, then Paste Here</div></div>
+      <div class="swap-row" role="row"><div role="cell">Type <code>cd</code> and the folder's path</div><div role="cell">Open In ▸ Terminal</div></div>
+      <div class="swap-row" role="row"><div role="cell">Open Preview to export a PNG</div><div role="cell">Convert Image ▸ PNG</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="features">
+  <div class="wrap">
+    <div class="rv">
+      <p class="kicker">What it adds</p>
+      <h2>Everything you reach for, <em>one right-click</em> away.</h2>
+    </div>
+    <div class="feats rv">
+      <article class="feat"><div class="badge"><svg aria-hidden="true"><use href="#i-new"/></svg></div><h3>New File</h3><p>Text, Markdown, Word, Excel, HTML, JSON, CSV, Python or Shell, named <code>Untitled</code> and selected. Drop any file into the Templates folder and it becomes a new kind.</p></article>
+      <article class="feat"><div class="badge"><svg aria-hidden="true"><use href="#i-link"/></svg></div><h3>Copy Path, Copy As</h3><p>The full path in one click. Or the name, a <code>~</code> path, a shell-quoted path, a <code>file://</code> URL, a Markdown link, a file's contents, a folder's tree, or a file's MD5, SHA-1 or SHA-256.</p></article>
+      <article class="feat"><div class="badge"><svg aria-hidden="true"><use href="#i-term"/></svg></div><h3>Open In</h3><p>Terminal, iTerm, Ghostty, Warp, VS Code, Cursor and Zed, found on your Mac, plus any app you add. On a file, a terminal opens its folder.</p></article>
+      <article class="feat"><div class="badge"><svg aria-hidden="true"><use href="#i-cut"/></svg></div><h3>Cut, then Paste</h3><p>Moves files the way Windows does. A name that's taken gets a number, and it works across disks.</p></article>
+      <article class="feat"><div class="badge"><svg aria-hidden="true"><use href="#i-move"/></svg></div><h3>Copy To, Move To</h3><p>Send the selection to your favorite folders in one step, or pick Other Folder…</p></article>
+      <article class="feat"><div class="badge"><svg aria-hidden="true"><use href="#i-img"/></svg></div><h3>Images</h3><p>Convert to PNG, JPEG, HEIC, TIFF, or an ICNS with every size from 16 to 1024. Or a copy 2048, 1024, 512 or 256 px on its longer side.</p></article>
+      <article class="feat"><div class="badge"><svg aria-hidden="true"><use href="#i-wand"/></svg></div><h3>File Actions</h3><p>Make a real Finder alias or a symlink, make a script executable, remove quarantine, dissolve a folder, or delete right away.</p></article>
+      <article class="feat"><div class="badge"><svg aria-hidden="true"><use href="#i-bolt"/></svg></div><h3>Your own actions</h3><p>Any shell command, with the selection as <code>"$@"</code>. Show it only for the file types and folders you pick, and give it a global shortcut.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="film">
+  <div class="wrap">
+    <div class="rv">
+      <p class="kicker">See it</p>
+      <h2>Twenty seconds in Finder.</h2>
+    </div>
+    <div class="film rv">
+      <video id="promo" src="/media/promo.mp4" poster="/media/poster.webp" autoplay muted loop playsinline preload="metadata" aria-label="Menubloom in Finder: a right-click, Copy Path, and a new Untitled.md"></video>
+      <button class="vctl" id="vctl" type="button" data-play="Play video" data-pause="Pause video" aria-label="Pause video">
+        <svg class="pause" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M4 2h3v12H4zM9 2h3v12H9z"/></svg>
+        <svg class="play" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M4 2l10 6-10 6z"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="more">
+  <div class="wrap">
+    <div class="rv">
+      <p class="kicker">The rest of it</p>
+      <h2>Small, quiet, and yours.</h2>
+    </div>
+    <div class="rest rv">
+      <div><h3>Info at a glance</h3><p>Size, created and modified dates, and an image's dimensions, right in the menu. Click one to copy it.</p></div>
+      <div><h3>Arranged your way</h3><p>Turn any group off, move it up or down, or show its items inline instead of in a submenu.</p></div>
+      <div><h3>iCloud Drive too</h3><p>Finder hides extension menus in cloud folders, so the most-used items are also in right-click ▸ Services.</p></div>
+      <div><h3>Nine themes</h3><p>Settings in light or dark, in nine soft color themes. In English and 简体中文.</p></div>
+      <div><h3>Private</h3><p>No network connections, nothing collected. Your settings stay in <code>~/Library/Application&nbsp;Support</code>.</p></div>
+      <div><h3>Safe by design</h3><p>Paths reach your commands as arguments, never pasted in, so a file named <code>$(rm&nbsp;-rf&nbsp;~)</code> is just a name.</p></div>
+      <div><h3>Native and light</h3><p>A menu bar app and a Finder extension. Universal for Apple Silicon and Intel, signed and notarized.</p></div>
+      <div><h3>Scripts and Shortcuts</h3><p>Every item also runs from the command line, so from Shortcuts, Raycast or Alfred.</p></div>
+      <div><h3>Free and open source</h3><p>MIT licensed. Every line is on GitHub.</p></div>
+    </div>
+    <div class="cli rv"><button class="copy" type="button" data-copy='alias menubloom="/Applications/Menubloom.app/Contents/MacOS/Menubloom"' data-done="Copied">Copy</button><span class="k">alias</span> menubloom="/Applications/Menubloom.app/Contents/MacOS/Menubloom"
+menubloom run copy:path ~/Desktop/a.txt   <span class="c"># Copy Path</span>
+menubloom run new:.md ~/notes             <span class="c"># a new Markdown file in ~/notes</span>
+menubloom run img:png photo.heic          <span class="c"># Convert Image ▸ PNG</span>
+menubloom run open:terminal .             <span class="c"># this folder in your terminal</span></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="final rv">
+    <img src="/logo-192.png" width="88" height="88" alt="">
+    <h2>Right-click. That's it.</h2>
+    <p>Free for macOS 12 or newer, on Apple Silicon and Intel.</p>
+    <div class="ctas">
+      <a class="btn btn-primary btn-lg" href="https://github.com/lzhgus/menubloom/releases/download/v0.5.0/menubloom-0.5.0.dmg"><svg width="18" height="18" aria-hidden="true"><use href="#i-apple"/></svg>Download Menubloom</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>Menubloom by <a href="https://github.com/lzhgus">lzhgus</a> · MIT License</span>
+    <nav aria-label="Footer">
+      <a href="https://github.com/lzhgus/menubloom">GitHub</a>
+      <a href="https://github.com/lzhgus/menubloom/releases">Releases</a>
+      <a href="https://github.com/lzhgus/menubloom/issues">Feedback</a>
+      <a href="/zh/" hreflang="zh-CN" lang="zh-CN">中文</a>
+    </nav>
+  </div>
+</footer>
+<script src="/site.js" defer></script>
+</body>
+</html>
