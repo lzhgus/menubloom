@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/screenshot-menu.png" width="460" alt="访达右键菜单里 Menubloom 的项目：新建文件、拷贝路径、拷贝为、简介、打开方式、剪切、拷贝到、移动到、文件操作">
+  <img src="assets/screenshot-menu.png" width="460" alt="在访达窗口空白处右键：Menubloom 加上了新建文件、拷贝路径、拷贝为、打开方式、显示隐藏文件和一个自定义动作，新建文件子菜单已展开">
 </p>
 
 <p align="center">

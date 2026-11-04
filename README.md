@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/screenshot-menu.png" width="460" alt="Finder's right-click menu with Menubloom's items: New File, Copy Path, Copy As, Info, Open In, Cut, Copy To, Move To and File Actions">
+  <img src="assets/screenshot-menu.png" width="460" alt="Right-clicking empty space in a Finder window: Menubloom adds New File, Copy Path, Copy As, Open In, Show Hidden Files and a custom action, with the New File submenu open">
 </p>
 
 <p align="center">
