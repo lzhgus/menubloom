@@ -21,6 +21,14 @@
   <img src="assets/screenshot-menu.png" width="460" alt="Finder's right-click menu with Menubloom's items: New File, Copy Path, Copy As, Info, Open In, Cut, Copy To, Move To and File Actions">
 </p>
 
+<p align="center">
+  <img src="assets/promo/menubloom-promo-20s.gif" width="640" alt="Menubloom in 20 seconds: right-click in Finder, Copy Path, and a new Untitled.md appears">
+</p>
+
+<p align="center">
+  <a href="assets/promo/menubloom-promo-20s.mp4">Watch the 20-second demo video (MP4)</a>
+</p>
+
 ## Why
 
 On Windows, you right-click in a folder and make a new text file, copy a

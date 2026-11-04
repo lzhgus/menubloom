@@ -21,6 +21,14 @@
   <img src="assets/screenshot-menu.png" width="460" alt="访达右键菜单里 Menubloom 的项目：新建文件、拷贝路径、拷贝为、简介、打开方式、剪切、拷贝到、移动到、文件操作">
 </p>
 
+<p align="center">
+  <img src="assets/promo/menubloom-promo-20s.gif" width="640" alt="Menubloom 20 秒演示：访达里右键、拷贝路径、新建 Untitled.md">
+</p>
+
+<p align="center">
+  <a href="assets/promo/menubloom-promo-20s.mp4">观看 20 秒演示视频（MP4）</a>
+</p>
+
 ## 为什么做
 
 在 Windows 上，在文件夹里点右键，就能新建文本文档、复制文件路径、在这里打开终端。
