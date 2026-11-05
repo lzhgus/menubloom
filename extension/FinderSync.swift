@@ -93,9 +93,7 @@ struct MenuBuilder {
                 item.image = NSImage(systemSymbolName: s, accessibilityDescription: nil)
             }
             if let a = e.app {
-                let icon = NSWorkspace.shared.icon(forFile: a)
-                icon.size = NSSize(width: 16, height: 16)
-                item.image = icon
+                item.image = smallIcon(a)
             }
             if let children = e.children {
                 let sub = NSMenu(title: item.title)
@@ -121,6 +119,40 @@ func isDir(_ u: URL) -> Bool {
         && u.pathExtension.lowercased() != "app"
 }
 
+// smallIcon is a file's icon as one 16pt bitmap at 2x. Finder gets a copy
+// of the menu, and NSWorkspace's icon carries every size up to 1024px:
+// hundreds of MB to copy for a few apps, which held the menu back.
+var icons: [String: NSImage] = [:]
+
+func smallIcon(_ path: String) -> NSImage {
+    if let i = icons[path] { return i }
+    let size = NSSize(width: 16, height: 16)
+    let image = NSImage(size: size)
+    if let rep = NSBitmapImageRep(bitmapDataPlanes: nil, pixelsWide: 32, pixelsHigh: 32, bitsPerSample: 8,
+                                  samplesPerPixel: 4, hasAlpha: true, isPlanar: false, colorSpaceName: .deviceRGB,
+                                  bytesPerRow: 0, bitsPerPixel: 0) {
+        // Sized before the context, whose units it sets: points, not pixels.
+        rep.size = size
+        guard let ctx = NSGraphicsContext(bitmapImageRep: rep) else { return image }
+        NSGraphicsContext.saveGraphicsState()
+        NSGraphicsContext.current = ctx
+        NSWorkspace.shared.icon(forFile: path).draw(in: NSRect(origin: .zero, size: size))
+        NSGraphicsContext.restoreGraphicsState()
+        image.addRepresentation(rep)
+    }
+    icons[path] = image
+    return image
+}
+
+// warm loads the menu's images before the first right-click asks for them.
+func warm(_ entries: [Entry]) {
+    for e in entries {
+        if let a = e.app { _ = smallIcon(a) }
+        if let s = e.symbol { _ = NSImage(systemSymbolName: s, accessibilityDescription: nil) }
+        warm(e.children ?? [])
+    }
+}
+
 func loadModel() -> Model? {
     guard let data = FileManager.default.contents(atPath: modelPath) else { return nil }
     return try? JSONDecoder().decode(Model.self, from: data)
@@ -135,6 +167,9 @@ class MBFinderSync: FIFinderSync {
     override init() {
         super.init()
         FIFinderSyncController.default().directoryURLs = [URL(fileURLWithPath: "/")]
+        DispatchQueue.main.async {
+            if let model = loadModel() { warm(model.items) }
+        }
     }
 
     override var toolbarItemName: String { "Menubloom" }

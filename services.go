@@ -117,3 +117,18 @@ func makeAlias(paths []string) ([]string, error) {
 	}
 	return done, nil
 }
+
+var (
+	selAEManager    = objc.RegisterName("sharedAppleEventManager")
+	selCurrentEvent = objc.RegisterName("currentAppleEvent")
+	selEventID      = objc.RegisterName("eventID")
+)
+
+// launchedPlainly reports whether the Apple Event being handled, the one
+// that launched the app, is a plain open ('oapp'): a launch to open a
+// URL, by a click in the menu, comes with none, and its URL only later.
+func launchedPlainly() bool {
+	const openApplication = 'o'<<24 | 'a'<<16 | 'p'<<8 | 'p'
+	ev := objc.ID(objc.GetClass("NSAppleEventManager")).Send(selAEManager).Send(selCurrentEvent)
+	return ev != 0 && objc.Send[uint32](ev, selEventID) == openApplication
+}

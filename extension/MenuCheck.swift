@@ -58,6 +58,11 @@ struct MenuCheck {
             b.add(rules, to: m)
             expect(titles(m) == want, "rules for \(sel.count) items: \(titles(m))")
         }
+        // An app's icon fills its whole 32px bitmap, not a corner of it.
+        let icon = smallIcon("/System/Applications/Utilities/Terminal.app")
+        guard let rep = icon.representations.first as? NSBitmapImageRep else { expect(false, "icon is a bitmap"); return }
+        expect(rep.pixelsWide == 32 && icon.size.width == 16, "icon is 16pt at 2x")
+        expect((rep.colorAt(x: 24, y: 8)?.alphaComponent ?? 0) > 0, "icon fills its top right")
         print("OK")
     }
 }

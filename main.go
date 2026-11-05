@@ -18,6 +18,7 @@ import (
 	"slices"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/egoist/mygo"
@@ -166,16 +167,13 @@ func (s *menubloom) ready() {
 	registerServices(s.handle)
 	s.bindKeys()
 	go s.watchTemplates()
+	go watchExtension()
 	// A launch by a click in the menu runs its action and stays out of the
-	// way; any other launch, but at login, opens Settings.
-	time.AfterFunc(700*time.Millisecond, func() {
-		mygo.RunOnMain(func() {
-			if !s.gotURL && !mygo.App.WasOpenedAtLogin() {
-				s.showSettings()
-			}
-			s.askOpenAtLogin()
-		})
-	})
+	// way; a plain launch, but at login, opens Settings.
+	if !s.gotURL && launchedPlainly() && !mygo.App.WasOpenedAtLogin() {
+		s.showSettings()
+	}
+	s.askOpenAtLogin()
 }
 
 // trayMenu is the menu bar icon's menu, in the app's language.
@@ -246,17 +244,60 @@ func (s *menubloom) watchTemplates() {
 	}
 }
 
-// checkExtension asks PlugInKit whether the Finder extension is enabled.
-func (s *menubloom) checkExtension() {
+// extensionStatus asks PlugInKit whether the Finder extension is enabled:
+// "on", "off" or "missing".
+func extensionStatus() string {
 	out, _ := exec.Command("/usr/bin/pluginkit", "-m", "-i", extensionID).Output()
-	status := "missing"
 	switch line := strings.TrimSpace(string(out)); {
 	case strings.HasPrefix(line, "+"):
-		status = "on"
+		return "on"
 	case line != "":
-		status = "off"
+		return "off"
 	}
+	return "missing"
+}
+
+func (s *menubloom) checkExtension() {
+	status := extensionStatus()
 	s.win.Update(func() { s.extStatus = status })
+}
+
+// watchExtension brings the Finder extension back when its process ends
+// while it is enabled: Finder doesn't start it again, so its items would
+// be gone from the right-click until Finder restarts.
+func watchExtension() {
+	kq, err := syscall.Kqueue()
+	if err != nil {
+		log.Println("watch extension:", err)
+		return
+	}
+	for {
+		if pid := extensionPID(); pid > 0 {
+			var ev syscall.Kevent_t
+			syscall.SetKevent(&ev, pid, syscall.EVFILT_PROC, syscall.EV_ADD|syscall.EV_ONESHOT)
+			ev.Fflags = syscall.NOTE_EXIT
+			out := make([]syscall.Kevent_t, 1)
+			for {
+				if _, err := syscall.Kevent(kq, []syscall.Kevent_t{ev}, out, nil); err != syscall.EINTR {
+					break
+				}
+			}
+			// A restarting Finder starts it again by itself.
+			time.Sleep(3 * time.Second)
+		} else if extensionStatus() == "on" {
+			exec.Command("/usr/bin/pluginkit", "-e", "use", "-i", extensionID).Run()
+			time.Sleep(10 * time.Second)
+		} else {
+			time.Sleep(30 * time.Second)
+		}
+	}
+}
+
+// extensionPID is the Finder extension's process, or 0.
+func extensionPID() int {
+	out, _ := exec.Command("/usr/bin/pgrep", "-f", "MenubloomFinder.appex/Contents/MacOS/MenubloomFinder").Output()
+	pid, _ := strconv.Atoi(strings.Fields(string(out) + " 0")[0])
+	return pid
 }
 
 func (s *menubloom) enableExtension() {
