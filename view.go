@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/egoist/mygo"
+	"github.com/egoist/mygo/plugins/updater"
 	"github.com/egoist/mygo/ui"
 )
 
@@ -201,6 +202,15 @@ func (s *menubloom) generalPage(c *ui.Context) {
 			}
 		})
 		row(c, "toolbar", T("Toolbar button"), T("Add Menubloom to Finder's toolbar with View ▸ Customize Toolbar…, for its menu in any window."), nil)
+		row(c, "updates", T("Updates"), T("Checks once a day and asks before installing."), func() {
+			auto := updater.AutomaticChecks()
+			if ui.Switch(c, &auto).Label(T("Check automatically")).Changed() {
+				updater.SetAutomaticChecks(auto)
+			}
+			if ui.Button(c, T("Check Now")).Clicked() {
+				updater.CheckForUpdates()
+			}
+		})
 		row(c, "data", T("Data folder"), s.dir, func() {
 			if ui.Button(c, T("Show")).Clicked() {
 				open(s.dir)

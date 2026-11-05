@@ -22,6 +22,8 @@ import (
 	"time"
 
 	"github.com/egoist/mygo"
+	"github.com/egoist/mygo/plugins/updater"
+	"github.com/egoist/mygo/plugins/updater/native"
 	"github.com/egoist/mygo/ui"
 )
 
@@ -59,6 +61,13 @@ func main() {
 	if err := s.load(); err != nil {
 		log.Fatal(err)
 	}
+	// Updates from the GitHub releases, checked once a day, in a window of
+	// native UI in the app's language.
+	updateLang := "en"
+	if lang == "zh" {
+		updateLang = "zh-Hans"
+	}
+	mygo.Use(native.New(updater.Options{Icon: iconPNG, Language: updateLang}))
 	// The command line, for scripts and Shortcuts: a running app gets the
 	// arguments of later instances, without the program's name.
 	mygo.App.OnSecondInstance(func(args []string, wd string) {
@@ -180,6 +189,7 @@ func (s *menubloom) ready() {
 func (s *menubloom) trayMenu() *mygo.Menu {
 	return mygo.NewMenu([]*mygo.MenuItem{
 		{Label: T("Settings…"), Accelerator: "Cmd+,", Click: func(*mygo.MenuItem, *mygo.Window) { s.showSettings() }},
+		updater.MenuItem(),
 		{Label: T("Restart Finder"), Click: func(*mygo.MenuItem, *mygo.Window) { go exec.Command("/usr/bin/killall", "Finder").Run() }},
 		mygo.Separator(),
 		{Role: mygo.RoleQuit},
@@ -271,6 +281,9 @@ func watchExtension() {
 		log.Println("watch extension:", err)
 		return
 	}
+	if pid := extensionPID(); pid > 0 && extensionStale(pid) {
+		syscall.Kill(pid, syscall.SIGTERM)
+	}
 	for {
 		if pid := extensionPID(); pid > 0 {
 			var ev syscall.Kevent_t
@@ -291,6 +304,30 @@ func watchExtension() {
 			time.Sleep(30 * time.Second)
 		}
 	}
+}
+
+// extensionStale reports whether the extension's process started before
+// its executable was written: an update replaced the app, and Finder would
+// keep running the old extension until it restarts.
+func extensionStale(pid int) bool {
+	cmd := exec.Command("/bin/ps", "-o", "lstart=", "-p", strconv.Itoa(pid))
+	cmd.Env = append(os.Environ(), "LC_ALL=C")
+	out, err := cmd.Output()
+	if err != nil {
+		return false
+	}
+	started, err := time.ParseInLocation("Mon Jan _2 15:04:05 2006", strings.TrimSpace(string(out)), time.Local)
+	if err != nil {
+		return false
+	}
+	exe, err := os.Executable()
+	if err != nil {
+		return false
+	}
+	bundle := filepath.Dir(filepath.Dir(filepath.Dir(exe)))
+	fi, err := os.Stat(filepath.Join(bundle, "Contents/PlugIns/MenubloomFinder.appex/Contents/MacOS/MenubloomFinder"))
+	// ps gives whole seconds.
+	return err == nil && fi.ModTime().After(started.Add(time.Second))
 }
 
 // extensionPID is the Finder extension's process, or 0.

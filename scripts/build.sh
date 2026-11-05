@@ -6,6 +6,7 @@
 #   scripts/build.sh --install    and install into /Applications, enable the extension, launch
 #   scripts/build.sh --release    and make a notarized disk image (needs MENUBLOOM_NOTARY,
 #                                 a profile of `xcrun notarytool store-credentials`)
+#                                 and the signed update (scripts/sign-update)
 #
 # SIGN picks the identity; the default is the first Developer ID Application
 # in the keychain, else ad hoc ("-"), which runs on this Mac only.
@@ -19,7 +20,9 @@ sign="${SIGN:-$(security find-identity -v -p codesigning | sed -n 's/.*"\(Develo
 sign="${sign:--}"
 echo "==> Menubloom $version, signed by: $sign"
 
-go run github.com/egoist/mygo/cmd/mygo build -platform darwin/universal -skip-dmg -skip-notarize -sign "$sign" .
+# No update signing key here: mygo's update would lack the extension, so
+# scripts/sign-update makes it from the finished app.
+env -u MYGO_UPDATER_PRIVATE_KEY go run github.com/egoist/mygo/cmd/mygo build -platform darwin/universal -skip-dmg -skip-notarize -sign "$sign" .
 app="build/darwin-universal/Menubloom.app"
 
 echo "==> Finder extension"
@@ -73,5 +76,7 @@ case "$mode" in
   xcrun notarytool submit "$dmg" --keychain-profile "$MENUBLOOM_NOTARY" --wait
   xcrun stapler staple "$dmg"
   xcrun stapler staple "$app"
+  echo "==> Update"
+  go run ./scripts/sign-update "$app" build
   ;;
 esac

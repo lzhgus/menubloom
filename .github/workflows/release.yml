@@ -13,6 +13,7 @@ name: Release
 #   APPLE_ID                  Apple ID email
 #   APPLE_TEAM_ID             10-character team ID
 #   NOTARIZE_PASSWORD         app-specific password from appleid.apple.com
+#   MYGO_UPDATER_PRIVATE_KEY  the update signing key (mygo-update.key)
 
 on:
   push:
@@ -85,6 +86,7 @@ jobs:
         env:
           SIGN: ${{ secrets.SIGN_ID }}
           MENUBLOOM_NOTARY: MENUBLOOM_NOTARY
+          MYGO_UPDATER_PRIVATE_KEY: ${{ secrets.MYGO_UPDATER_PRIVATE_KEY }}
         run: scripts/build.sh --release
 
       - name: Verify
@@ -100,7 +102,10 @@ jobs:
         if: env.HAS_SECRETS == 'true'
         with:
           name: menubloom-${{ steps.version.outputs.version }}
-          path: build/*.dmg
+          path: |
+            build/*.dmg
+            build/*.tar.gz
+            build/update-*.json
 
       - name: Draft GitHub Release
         if: env.HAS_SECRETS == 'true' && github.ref_type == 'tag'
@@ -110,7 +115,9 @@ jobs:
           gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 && { echo "::notice::$GITHUB_REF_NAME is released already"; exit 0; }
           gh release create "$GITHUB_REF_NAME" --draft --generate-notes \
             --title "Menubloom ${{ steps.version.outputs.version }}" \
-            "build/menubloom-${{ steps.version.outputs.version }}.dmg"
+            "build/menubloom-${{ steps.version.outputs.version }}.dmg" \
+            "build/menubloom-${{ steps.version.outputs.version }}-darwin-universal.tar.gz" \
+            build/update-darwin-universal.json
 
       - name: Clean up keychain
         if: always() && env.HAS_SECRETS == 'true'
