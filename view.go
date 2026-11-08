@@ -39,6 +39,8 @@ func (s *menubloom) view(c *ui.Context) {
 				s.foldersPage(c)
 			case "actions":
 				s.actionsPage(c)
+			case "shortcuts":
+				s.shortcutsPage(c)
 			default:
 				s.generalPage(c)
 			}
@@ -465,7 +467,7 @@ func (s *menubloom) actionsPage(c *ui.Context) {
 						if ui.TextInput(c, &a.Shortcut).Placeholder(T("none; or e.g. Cmd+Shift+G")).Changed() {
 							s.save()
 						}
-					}).Description(T("Runs it on Finder's selection from anywhere; asks once to control Finder.")).Error(s.keysErr[a.ID])
+					}).Description(T("Runs it on Finder's selection from anywhere; asks once to control Finder.")).Error(s.keysErr["act:"+a.ID])
 					ui.Field(c, T("Output"), func() {
 						if ui.Checkbox(c, &a.Terminal, T("Run in a Terminal window")).Changed() {
 							s.save()
@@ -488,6 +490,53 @@ func (s *menubloom) actionsPage(c *ui.Context) {
 			}
 		}
 	})
+}
+
+// shortcutsPage gives every item that makes sense from the keyboard a
+// field for its global shortcut, custom actions too, in one place.
+func (s *menubloom) shortcutsPage(c *ui.Context) {
+	header(c, T("Shortcuts"), T("Run an item on what's selected in Finder without opening the menu. The first use asks once to control Finder."))
+	field := func(id, title string, key *string, changed func()) {
+		row(c, id, title, "", func() {
+			ui.Column(c).Width(190).Gap(3).Children(func() {
+				if ui.TextInput(c, key).Placeholder(T("none")).Changed() {
+					changed()
+				}
+				if e := s.keysErr[id]; e != "" {
+					ui.Text(c, e).FontSize(11).TextColor(c.Theme().Danger)
+				}
+			})
+		})
+	}
+	s.card(c, "builtin", func() {
+		for _, b := range bindable(s.cfg, s.templates) {
+			k := s.cfg.Keys[b.ID]
+			field(b.ID, b.Title, &k, func() { s.setKey(b.ID, k) })
+		}
+	})
+	if len(s.cfg.Actions) > 0 {
+		label(c, T("Custom Actions"))
+		s.card(c, "custom", func() {
+			for i := range s.cfg.Actions {
+				a := &s.cfg.Actions[i]
+				field("act:"+a.ID, a.Name, &a.Shortcut, s.save)
+			}
+		})
+	}
+	muted(c, T("Write a shortcut as e.g. Cmd+Shift+C, with Cmd, Ctrl, Alt or Shift. It works in every app while Menubloom runs, so pick one your other apps don't use."))
+}
+
+// setKey sets a built-in item's shortcut; "" removes it.
+func (s *menubloom) setKey(id, key string) {
+	if key == "" {
+		delete(s.cfg.Keys, id)
+	} else {
+		if s.cfg.Keys == nil {
+			s.cfg.Keys = map[string]string{}
+		}
+		s.cfg.Keys[id] = key
+	}
+	s.save()
 }
 
 // examples are custom actions one click away.

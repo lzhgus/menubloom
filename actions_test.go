@@ -5,10 +5,12 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"slices"
 	"strconv"
 	"strings"
+	"syscall"
 	"testing"
 	"time"
 )
@@ -122,9 +124,8 @@ func TestTemplates(t *testing.T) {
 		t.Fatal("seeding again brought back a template the user deleted")
 	}
 
-	p, err := newFile(tmpl, "Word Document.docx", d)
-	if err != nil || p != filepath.Join(d, "Untitled.docx") {
-		t.Fatalf("new file %s, %v", p, err)
+	if err := newFile(tmpl, "Word Document.docx", filepath.Join(d, "Untitled.docx")); err != nil {
+		t.Fatal(err)
 	}
 	// The Office files must be real documents: textutil reads them as Word does.
 	for _, name := range []string{"Untitled.docx"} {
@@ -132,11 +133,38 @@ func TestTemplates(t *testing.T) {
 			t.Errorf("%s isn't a document: %s", name, out)
 		}
 	}
-	if _, err := newFile(tmpl, "../config.json", d); err == nil {
+	if err := newFile(tmpl, "../config.json", filepath.Join(d, "x.json")); err == nil {
 		t.Error("made a file from outside the Templates folder")
 	}
 	if fi, _ := os.Stat(filepath.Join(tmpl, "Shell Script.sh")); fi == nil || fi.Mode()&0o100 == 0 {
 		t.Error("the shell script template isn't executable")
+	}
+
+	// A new file is dated now, not when the template was made, or Finder
+	// sorts it among old files where the user doesn't see it.
+	old := time.Now().Add(-48 * time.Hour)
+	pkg := filepath.Join(tmpl, "Deck.key")
+	os.MkdirAll(filepath.Join(pkg, "Data"), 0o755)
+	for _, name := range []string{"Shell Script.sh", "Deck.key"} {
+		os.Chtimes(filepath.Join(tmpl, name), old, old)
+		p := uniquePath(d, "Untitled"+filepath.Ext(name))
+		if err := newFile(tmpl, name, p); err != nil {
+			t.Fatal(name, err)
+		}
+		fi, _ := os.Stat(p)
+		born := time.Unix(fi.Sys().(*syscall.Stat_t).Birthtimespec.Unix())
+		if time.Since(fi.ModTime()) > time.Minute || name != "Deck.key" && time.Since(born) > time.Minute {
+			t.Errorf("%s is dated %v, born %v, as its template", filepath.Base(p), fi.ModTime(), born)
+		}
+		if name == "Shell Script.sh" && fi.Mode()&0o100 == 0 {
+			t.Error("the new shell script isn't executable")
+		}
+		if name == "Deck.key" && !isDir(filepath.Join(p, "Data")) {
+			t.Error("the package template wasn't copied whole")
+		}
+	}
+	if err := newFile(tmpl, "Shell Script.sh", filepath.Join(d, "Untitled.sh")); err == nil {
+		t.Error("overwrote a file that's there")
 	}
 }
 
@@ -523,5 +551,37 @@ func TestParseCLI(t *testing.T) {
 		if _, ok := parseCLI(args, "/"); ok {
 			t.Errorf("accepted %v", args)
 		}
+	}
+}
+
+// Every built-in item a shortcut can run is one the menu has, and only
+// those that are there, and set, are bound.
+func TestShortcuts(t *testing.T) {
+	c := Config{
+		Apps:    []App{{Name: "Terminal", Path: "/System/Applications/Utilities/Terminal.app"}, {Name: "Off", Path: "/x/Off.app", Off: true}},
+		Actions: []Action{{ID: "a1", Name: "Mine", Shortcut: " Cmd+Alt+M "}, {ID: "a2", Name: "None"}},
+		Keys: map[string]string{
+			"copy:path": "Cmd+Shift+C", "new:Gone.txt": "Cmd+Shift+G", "cut": "  ",
+			"open:/x/Off.app": "Cmd+Shift+O",
+		},
+	}
+	templates := []string{"Markdown.md"}
+	menu := map[string]bool{}
+	var walk func([]Entry)
+	walk = func(es []Entry) {
+		for _, e := range es {
+			menu[e.ID] = true
+			walk(e.Children)
+		}
+	}
+	walk(buildMenu(c, State{Templates: templates, Cut: []string{"/tmp/x"}}))
+	for _, b := range bindable(c, templates) {
+		if !menu[b.ID] {
+			t.Errorf("%s (%s) isn't in the menu", b.ID, b.Title)
+		}
+	}
+	want := map[string]string{"copy:path": "Cmd+Shift+C", "act:a1": "Cmd+Alt+M"}
+	if got := shortcuts(c, templates); !reflect.DeepEqual(got, want) {
+		t.Errorf("shortcuts = %v, want %v", got, want)
 	}
 }

@@ -86,6 +86,9 @@ type Config struct {
 	Palette    string   `json:"palette,omitempty"`    // a Palette's name
 	// AskedLogin: the app asked once whether to open at login.
 	AskedLogin bool `json:"askedLogin,omitempty"`
+	// Keys are the global shortcuts of built-in items, by menu id
+	// ("copy:path": "Cmd+Shift+C"); custom actions keep theirs.
+	Keys map[string]string `json:"keys,omitempty"`
 }
 
 // Ordered returns the groups in the user's order, then those added since.

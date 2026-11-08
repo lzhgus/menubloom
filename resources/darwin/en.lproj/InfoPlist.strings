@@ -1,1 +1,1 @@
-"NSAppleEventsUsageDescription" = "Shortcuts of your custom actions ask Finder which items are selected.";
+"NSAppleEventsUsageDescription" = "Your shortcuts ask Finder which items are selected, to run on them.";

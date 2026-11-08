@@ -2,7 +2,7 @@
   "name": "Menubloom",
   "slug": "menubloom",
   "identifier": "io.github.lzhgus.menubloom",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "copyright": "© 2026 lzhgus",
   "icon": "assets/icon.png",
   "out": "build",
@@ -129,7 +129,7 @@
           "NSRequiredContext": {}
         }
       ],
-      "NSAppleEventsUsageDescription": "Shortcuts of your custom actions ask Finder which items are selected.",
+      "NSAppleEventsUsageDescription": "Your shortcuts ask Finder which items are selected, to run on them.",
       "CFBundleDevelopmentRegion": "en",
       "CFBundleLocalizations": [
         "en",

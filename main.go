@@ -47,7 +47,7 @@ type menubloom struct {
 	extStatus string // "on", "off" or "missing"
 	login     bool
 	extsText  map[string]string
-	keysErr   map[string]string // why shortcuts failed, by action
+	keysErr   map[string]string // why shortcuts failed, by menu id
 	keys      string            // the shortcuts registered, to notice changes
 	sk        Skin              // the palette, as the view draws it
 }
@@ -134,15 +134,12 @@ func (s *menubloom) save() {
 	s.bindKeys()
 }
 
-// bindKeys registers the custom actions' shortcuts when they changed.
+// bindKeys registers the shortcuts when they changed.
 func (s *menubloom) bindKeys() {
-	var keys []string
-	for _, a := range s.cfg.Actions {
-		keys = append(keys, a.ID+"="+a.Shortcut)
-	}
-	if k := strings.Join(keys, ","); k != s.keys {
+	keys := shortcuts(s.cfg, s.templates)
+	if k := fmt.Sprint(keys); k != s.keys { // fmt sorts a map's keys
 		s.keys = k
-		s.keysErr = s.registerShortcuts()
+		s.keysErr = s.registerShortcuts(keys)
 	}
 }
 
@@ -249,6 +246,7 @@ func (s *menubloom) watchTemplates() {
 		mygo.RunOnMain(func() {
 			s.templates = names
 			s.refreshMenu()
+			s.bindKeys()
 			s.win.Invalidate()
 		})
 	}
@@ -437,14 +435,37 @@ func (s *menubloom) handle(r Request) {
 				arg = s.templates[i]
 			}
 		}
-		dir := r.folder()
+		if !slices.Contains(s.templates, arg) {
+			s.notify(T("Couldn't create the file"), fmt.Sprintf(T("No template for %s in the Templates folder."), arg))
+			return
+		}
+		// Asked for a name, as Finder's New Folder does: the click shows
+		// something, and the file doesn't land unnoticed as "Untitled".
+		ext := filepath.Ext(arg)
+		var filters []mygo.FileFilter
+		if ext != "" {
+			filters = []mygo.FileFilter{{Name: arg, Extensions: []string{ext}}}
+		}
+		mygo.App.Focus()
+		dst, err := mygo.Dialog.Save(mygo.SaveDialogOptions{
+			Title:             T("New File"),
+			DefaultPath:       uniquePath(r.folder(), "Untitled"+ext),
+			ButtonLabel:       T("Create"),
+			Filters:           filters,
+			CreateDirectories: true,
+		})
+		if err != nil || dst == "" {
+			return
+		}
 		go func() {
-			p, err := newFile(s.templatesDir(), arg, dir)
-			if err != nil {
+			if fi, err := os.Lstat(dst); err == nil && !fi.IsDir() {
+				os.Remove(dst) // the panel asked whether to replace it
+			}
+			if err := newFile(s.templatesDir(), arg, dst); err != nil {
 				s.notify(T("Couldn't create the file"), err.Error())
 				return
 			}
-			reveal(p)
+			reveal(dst)
 		}()
 	case "templates":
 		go exec.Command("/usr/bin/open", s.templatesDir()).Run()

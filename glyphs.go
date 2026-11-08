@@ -15,6 +15,7 @@ var (
 	glyphOpenIn     = glyph(`<rect x="3" y="4" width="18" height="16" rx="3"/><path d="M7.5 9.5l3 2.5-3 2.5M13 15h3.5"/>`)
 	glyphFolders    = glyph(`<path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H9l2 2h7.5A2.5 2.5 0 0 1 21 9.5v7a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 16.5z"/>`)
 	glyphActions    = glyph(`<path d="M13 2.5L4.5 13.5H11l-1 8 8.5-11H12z"/>`)
+	glyphShortcuts  = glyph(`<rect x="2.5" y="6" width="19" height="12" rx="2.5"/><path d="M8 14.5h8"/><path d="M6.5 10h.01M10 10h.01M14 10h.01M17.5 10h.01" stroke-width="2.6"/>`)
 	glyphUp         = glyph(`<path d="M6 15l6-6 6 6"/>`)
 	glyphDown       = glyph(`<path d="M6 9l6 6 6-6"/>`)
 )
@@ -33,6 +34,7 @@ var panes = []struct {
 	{"openin", "Open In", glyphOpenIn, 265, 0.03, 0.34},
 	{"folders", "Folders", glyphFolders, 225, 0.13, 0.66},
 	{"actions", "Custom Actions", glyphActions, 55, 0.17, 0.7},
+	{"shortcuts", "Shortcuts", glyphShortcuts, 300, 0.14, 0.6},
 }
 
 // badge draws a section's icon: its glyph in white on a rounded square of

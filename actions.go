@@ -150,17 +150,42 @@ func hashFiles(kind string, paths []string) (string, error) {
 	return strings.Join(lines, "\n"), nil
 }
 
-// newFile copies a template into dir under a free "Untitled" name.
-func newFile(templates, template, dir string) (string, error) {
+// newFile makes the file dst from a template. It is dated now, not when
+// the template was: Finder sorts it with today's files, where the user
+// looks for it.
+func newFile(templates, template, dst string) error {
 	if template != filepath.Base(template) || strings.HasPrefix(template, ".") {
-		return "", fmt.Errorf("not a template: %q", template)
+		return fmt.Errorf("not a template: %q", template)
 	}
 	src := filepath.Join(templates, template)
-	dst := uniquePath(dir, "Untitled"+filepath.Ext(template))
-	if err := copyItem(src, dst); err != nil {
-		return "", err
+	in, err := os.Open(src)
+	if err != nil {
+		return err
 	}
-	return dst, nil
+	defer in.Close()
+	fi, err := in.Stat()
+	if err != nil {
+		return err
+	}
+	if fi.IsDir() { // a package, as Pages or Keynote save
+		if err := copyItem(src, dst); err != nil {
+			return err
+		}
+		now := time.Now()
+		return os.Chtimes(dst, now, now)
+	}
+	out, err := os.OpenFile(dst, os.O_WRONLY|os.O_CREATE|os.O_EXCL, fi.Mode().Perm())
+	if err != nil {
+		return err
+	}
+	_, err = io.Copy(out, in)
+	if cerr := out.Close(); err == nil {
+		err = cerr
+	}
+	if err != nil {
+		os.Remove(dst)
+	}
+	return err
 }
 
 // copyItem copies a file or folder with its metadata, as Finder does.

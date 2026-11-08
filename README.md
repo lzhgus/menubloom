@@ -59,7 +59,7 @@ newer.
 
 | Item | Where | What it does |
 |---|---|---|
-| **New File ▸** | folder background, a folder, the toolbar | creates `Untitled.<ext>` from a template (Text, Markdown, Word, Excel, RTF, HTML, JSON, CSV, Python, Shell) and selects it. **Any file you drop into the Templates folder becomes a new kind**, as on Windows |
+| **New File ▸** | folder background, a folder, the toolbar | creates a file from a template (Text, Markdown, Word, Excel, RTF, HTML, JSON, CSV, Python, Shell), asking its name (Return keeps `Untitled.<ext>`), and selects it. **Any file you drop into the Templates folder becomes a new kind**, as on Windows |
 | **Copy Path** | everywhere | the full path of the selection or the folder, one per line |
 | **Copy As ▸** | everywhere | name, name without extension, `~` path, shell-quoted path, `file://` URL, Markdown link; a text file's contents; a folder's tree; MD5 / SHA-1 / SHA-256 |
 | **Info ▸** | one item | size, created and modified dates right in the menu, and an image's dimensions; click one to copy it |
@@ -70,6 +70,11 @@ newer.
 | **Convert Image ▸ / Resize Image ▸** | images | a PNG, JPEG, HEIC, TIFF or ICNS (every size from 16 to 1024) beside the original, or a copy 2048, 1024, 512 or 256 px on its longer side |
 | **Show / Hide Hidden Files** | folder background | toggles Finder's hidden files |
 | **Custom actions** | where you choose | your own shell commands, with the selected paths as `"$@"`; shown only for the file types, number of items and folders you pick; in the background or in a Terminal window; with a global shortcut if you want one |
+
+**Shortcuts.** Copy Path, Copy As, New File, Open In, Cut, Paste and Show
+Hidden Files also take a global shortcut (Settings ▸ Shortcuts, e.g.
+`Cmd+Shift+C`), which runs them on what's selected in Finder without opening
+the menu. The first use asks once to control Finder.
 
 In **Settings** (menu bar icon ▸ Settings…) you can turn any group off, move it
 up or down, or show its items **inline** instead of in a submenu. Settings and
