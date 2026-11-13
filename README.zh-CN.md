@@ -16,6 +16,7 @@
 <p align="center">
   <a href="https://github.com/lzhgus/menubloom/releases/latest"><img src="https://img.shields.io/github/v/release/lzhgus/menubloom?label=download&logo=apple&color=f08a4b" alt="最新版本"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/lzhgus/menubloom?color=blue" alt="MIT 许可证"></a>
+  <a href="https://awesomemygo.dev/apps/menubloom"><img src="https://awesomemygo.dev/badge.svg" alt="已收录于 Awesome MyGo"></a>
 </p>
 
 <p align="center">
@@ -49,6 +50,12 @@ Menubloom 把这些功能放回访达的右键菜单，再加上开发者和重�
 1. 打开 DMG，把 **Menubloom** 拖到“应用程序”。
 2. 打开它。设置里有一份简短的清单：打开访达扩展，需要的话再打开“登录时打开”。
 3. 在任意访达窗口里点右键。
+
+也可以用 [Homebrew](https://github.com/lzhgus/homebrew-tap) 安装：
+
+```sh
+brew install --cask lzhgus/tap/menubloom
+```
 
 ## 加了什么
 
@@ -100,9 +107,28 @@ SC="/Applications/Menubloom.app/Contents/MacOS/Menubloom"
 - 访达刚启动时的第一次右键，扩展可能还没加载好，再右键一次就有了。
 - 更新之后，可以用菜单栏图标菜单里的 **重新启动访达**。
 
+## 和同类应用对比
+
+还有两款应用也能扩展 Finder 右键菜单：[RClick](https://github.com/wflixu/RClick)
+和 [SaneClick](https://saneclick.com)。下面关于它们的信息来自各自的 README 和官网
+（截至 2026-11-13），不是上手实测；有不准确的地方欢迎指正。
+
+| | Menubloom | RClick | SaneClick |
+|---|---|---|---|
+| 许可证 | MIT | GPL-3.0 | PolyForm Shield 1.0.0（源码公开） |
+| 价格 | 免费 | 免费 | 免费试用 14 天，之后一次性 $14.99；Mac App Store 版免费，含 13 个动作 |
+| macOS | 12 或更新 | 15.6 或更新 | 14 或更新 |
+| 芯片 | Apple Silicon 和 Intel | — | 仅 Apple Silicon |
+| 内置功能 | 新建文件、拷贝路径和多种拷贝格式、用其他应用打开、剪切粘贴、拷贝到 / 移动到、文件操作、图片转换 | 用任意应用打开、拷贝路径 / 文件名、按模板新建文件、直接删除、隐藏 / 显示、隔空投送、常用文件夹 | 62 个动作，包括图片识字（OCR）、PDF 合并拆分、图片转换和哈希 |
+| 自定义动作 | Shell 命令，可设全局快捷键 | 用应用打开，可带自定义参数 | Bash、AppleScript 或 Automator 脚本 |
+
+“—”表示我们在对方文档里没找到。想在右键里用 OCR 和 PDF 工具，可以选 SaneClick；
+Menubloom 专注 Windows 用户最想念的那些文件基础操作，免费，旧款 Mac 也能用。
+
 ## 隐私
 
-Menubloom 不联网，也不收集任何数据。设置都保存在你的 Mac 上：
+Menubloom 不收集任何数据。它唯一的联网是每天去 GitHub 检查一次新版本，
+可以在「设置 ▸ 通用」里关掉。设置都保存在你的 Mac 上：
 `~/Library/Application Support/Menubloom/`。
 
 ## 从源码构建

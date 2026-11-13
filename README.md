@@ -16,6 +16,7 @@
 <p align="center">
   <a href="https://github.com/lzhgus/menubloom/releases/latest"><img src="https://img.shields.io/github/v/release/lzhgus/menubloom?label=download&logo=apple&color=f08a4b" alt="Latest release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/lzhgus/menubloom?color=blue" alt="MIT License"></a>
+  <a href="https://awesomemygo.dev/apps/menubloom"><img src="https://awesomemygo.dev/badge.svg" alt="Listed on Awesome MyGo"></a>
 </p>
 
 <p align="center">
@@ -54,6 +55,12 @@ newer.
 2. Open it. Settings shows a short checklist: turn on the Finder extension and,
    if you like, open at login.
 3. Right-click in any Finder window.
+
+Or with [Homebrew](https://github.com/lzhgus/homebrew-tap):
+
+```sh
+brew install --cask lzhgus/tap/menubloom
+```
 
 ## What it adds
 
@@ -116,10 +123,32 @@ Ids: `copy:path|name|stem|tilde|quoted|url|md|contents|tree`, `hash:md5|sha1|sha
   has loaded. The next one has the items.
 - **Restart Finder**, in the menu bar icon's menu, helps after an update.
 
+## How it compares
+
+Two other apps also add to Finder's right-click menu:
+[RClick](https://github.com/wflixu/RClick) and
+[SaneClick](https://saneclick.com). The facts about them below come from their
+own READMEs and websites as of 2026-11-13, not from hands-on testing;
+corrections are welcome.
+
+| | Menubloom | RClick | SaneClick |
+|---|---|---|---|
+| License | MIT | GPL-3.0 | PolyForm Shield 1.0.0 (source available) |
+| Price | Free | Free | Free 14-day trial, then $14.99 once; a Mac App Store version is free with 13 actions |
+| macOS | 12 or newer | 15.6 or newer | 14 or newer |
+| Macs | Apple Silicon and Intel | — | Apple Silicon only |
+| Built in | New File, Copy Path and Copy As, Open In, Cut & Paste, Copy To / Move To, file actions, image conversion | Open with any app, Copy Path / Name, New File from templates, Delete Direct, Hide / Unhide, AirDrop, pinned folders | 62 actions, including text from images (OCR), PDF merge and split, image conversion and hashing |
+| Your own actions | Shell commands, with global shortcuts | Open with apps, with custom arguments | Bash, AppleScript or Automator scripts |
+
+"—" means we did not find it in their docs. If you want OCR and PDF tools in
+the menu, SaneClick has them; Menubloom focuses on the file basics Windows
+users miss, free and on older Macs too.
+
 ## Privacy
 
-Menubloom makes no network connections and collects nothing. Its settings
-stay on your Mac, in `~/Library/Application Support/Menubloom/`.
+Menubloom collects nothing. Its only network connection is a check for a new
+version on GitHub once a day, which you can turn off in Settings ▸ General.
+Its settings stay on your Mac, in `~/Library/Application Support/Menubloom/`.
 
 ## Build from source
 
